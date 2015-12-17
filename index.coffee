@@ -72,6 +72,3 @@ lp = (timestamp)->
       m.endComputation()
   window.requestAnimationFrame lp
 window.requestAnimationFrame lp
-
-
-
