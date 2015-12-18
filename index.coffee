@@ -12,6 +12,11 @@ mine
     price: 100
     ore: 1
     delta: 50
+  madMiner:
+    cnt: 0
+    price: 300
+    ore: 1
+    delta: 20
   cart:
     cnt: 0
     price: 1000
