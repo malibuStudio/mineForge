@@ -10,55 +10,52 @@ mine
   miner:
     cnt: 0
     price: 100
-    ore: 10
-    delta: 2000
+    ore: 1
+    delta: 50
   cart:
     cnt: 0
     price: 1000
+    ore: 10
+    delta: 100
+  train:
+    cnt: 0
+    price: 10000
     ore: 100
-    delta: 4000
+    delta: 200
 v.last= +new Date for k,v of mine()
 
 # forge model
 @forge = [
   name: "knife"
   next: 300
-  income: 100
   chance: 1
 ,
   name: "durk"
   next: 400
-  income: 200
   chance: 1
 ,
   name: "mainGauche"
   next: 500
-  income: 300
   chance: 1
 ,
   name: "shortSword"
   next: 700
-  income: 400
   chance: 0.9
 ,
   name: "falchion"
   next: 1000
-  income: 900
   chance: 0.85
 ,
   name: "blade"
   next: 1300
-  income: 1400
   chance: 0.8
 ,
   name: "Mithril Sword"
   next: 200000
-  income: 400000
   chance: 0.2
 ,
   name: "DEATH STAR!"
   next: 1000000000
-  income: 1100000000
   chance: 0.01
 ]
 
@@ -124,14 +121,12 @@ m.route document.body, '/',
             m 'span', ' ores'
           m 'div.info'
             m 'div.next', "next :#{forge[forgeLevel()].next}"
-            m 'div.income', "income :#{forge[forgeLevel()].income}"
             m 'div.chance', "chance :#{forge[forgeLevel()].chance*100}%"
             m 'div.forge', onclick: (e)->
               unless ores()<forge[forgeLevel()].next
                 chance = Math.random()
                 ores ores()-forge[forgeLevel()].next
                 if chance < forge[forgeLevel()].chance
-                  ores ores()+forge[forgeLevel()].income
                   forgeLevel forgeLevel()+1
                 else
                   forgeLevel 0
