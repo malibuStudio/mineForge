@@ -1,5 +1,5 @@
 # m.route.mode = 'pathname'
-@ores = m.prop "ores"
+ores = m.prop "ores"
 ores 0
 time = m.prop "time"
 time +new Date
@@ -65,6 +65,17 @@ v.last= +new Date for k,v of mine()
 forgeLevel = m.prop "forgeLevel"
 forgeLevel 0
 
+# easter egg
+eggBuf=""
+sesame="rhwlqheld"
+window.addEventListener 'keypress', (e)->
+  eggBuf += String.fromCharCode(e.charCode)
+  eggBuf = eggBuf.substring(eggBuf.length-sesame.length)
+  m.startComputation()
+  ores ores()*10 if eggBuf is sesame
+  m.endComputation()
+
+# main Router
 m.route document.body, '/',
   '/':
     view: ->
