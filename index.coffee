@@ -68,12 +68,13 @@ forgeLevel 0
 m.route document.body, '/',
   '/':
     view: ->
-      m 'h1', 'mineForge'
-      m 'ul',
-        m 'li',
-          m 'a[href=/mine]', config:m.route, 'go to mine'
-        m 'li',
-          m 'a[href=/forge]', config:m.route, 'go to forge'
+      m 'div#home',
+        m 'h1', 'mineForge'
+        m 'ul',
+          m 'li',
+            m 'a[href=/mine]', config:m.route, 'go to mine'
+          m 'li',
+            m 'a[href=/forge]', config:m.route, 'go to forge'
   '/mine':
     controller: ->
       't': -> time()
