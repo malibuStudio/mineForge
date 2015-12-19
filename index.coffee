@@ -30,7 +30,7 @@ mine
 v.last= +new Date for k,v of mine()
 
 # forge model
-@forge = [
+forge = [
   name: "knife"
   next: 300
   chance: 1
@@ -70,7 +70,8 @@ forgeLevel 0
 # easter egg
 eggBuf=""
 sesame="rhwlqheld"
-window.addEventListener 'keypress', (e)->
+
+document.addEventListener 'keypress', (e)->
   eggBuf += String.fromCharCode(e.charCode)
   eggBuf = eggBuf.substring(eggBuf.length-sesame.length)
   m.startComputation()
@@ -91,13 +92,12 @@ m.route document.body, '/',
   '/mine':
     controller: ->
       't': -> time()
-    view: (c)->
+    view: ->
       m 'div#mine',
         m 'a[href=/]', config:m.route, '< back'
-        m 'div#touchMine', onclick: (e)->
+        m 'div#touchMine', onclick: ->
           ores ores()+1
-          e.preventDefault()
-        , 'mine'
+        ,'mine'
         m 'ul#mine',
           for k,v of mine()
             m "li##{k}",
@@ -105,7 +105,7 @@ m.route document.body, '/',
               m "span.cnt", v.cnt
               # come closure!
               m "div.add", onclick: ((wrks)->
-                (e)->
+                ->
                   if ores()>=wrks.price
                     ores ores()-wrks.price
                     wrks.cnt += 1
@@ -127,7 +127,7 @@ m.route document.body, '/',
           m 'div.info'
             m 'div.next', "next :#{forge[forgeLevel()].next}"
             m 'div.chance', "chance :#{forge[forgeLevel()].chance*100}%"
-            m 'div.forge', onclick: (e)->
+            m 'div.forge', onclick: ->
               unless ores()<forge[forgeLevel()].next
                 chance = Math.random()
                 ores ores()-forge[forgeLevel()].next
@@ -137,8 +137,7 @@ m.route document.body, '/',
                   forgeLevel 0
             , "forge!"
 
-last = time()
-lp = (timestamp)->
+lp = ->
   time +new Date
   for k,v of mine()
     delta = time() - v.last
