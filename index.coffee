@@ -78,6 +78,13 @@ document.addEventListener 'keypress', (e)->
   ores ores()*10 if eggBuf is sesame
   m.endComputation()
 
+# components
+currentOresComponent = m.component
+  view: ->
+    m 'div#ores',
+      m 'span.count', ores()
+      m 'span', ' ores'
+
 # main Router
 m.route document.body, '/',
   '/':
@@ -89,6 +96,7 @@ m.route document.body, '/',
             m 'a[href=/mine]', config:m.route, 'go to mine'
           m 'li',
             m 'a[href=/forge]', config:m.route, 'go to forge'
+        currentOresComponent
   '/mine':
     controller: ->
       't': -> time()
@@ -112,18 +120,14 @@ m.route document.body, '/',
                     wrks.last = +new Date
               )(v), "add"
               m "span.price", "price #{v.price} ore"
-        m 'div#ores',
-          m 'span.count', ores()
-          m 'span', ' ores'
+        currentOresComponent
   '/forge':
     view: ->
       m 'div#forge',
         m 'a[href=/]', config:m.route, '< back'
         m 'div#equip'
           m 'h', "#{forge[forgeLevel()].name}"
-          m 'div#ores',
-            m 'span.count', ores()
-            m 'span', ' ores'
+          currentOresComponent
           m 'div.info'
             m 'div.next', "next :#{forge[forgeLevel()].next}"
             m 'div.chance', "chance :#{forge[forgeLevel()].chance*100}%"
