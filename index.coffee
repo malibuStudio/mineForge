@@ -5,31 +5,28 @@ time = m.prop "time"
 time +new Date
 mine = m.prop "mine"
 
-# mine model
+## mine model
 mine
   miner:
-    cnt: 0
     price: 100
     ore: 1
     delta: 50
   madMiner:
-    cnt: 0
     price: 300
     ore: 1
     delta: 20
   cart:
-    cnt: 0
     price: 1000
     ore: 10
     delta: 100
   train:
-    cnt: 0
     price: 10000
     ore: 100
     delta: 200
-v.last= +new Date for k,v of mine()
+# set initial value
+v.last= +new Date and v.cnt =0 for k,v of mine()
 
-# forge model
+## forge model
 forge = [
   name: "knife"
   next: 300
