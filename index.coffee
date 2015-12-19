@@ -1,6 +1,7 @@
 # m.route.mode = 'pathname'
 ores = m.prop "ores"
-ores 0
+# preserve ore counts by localStorage
+ores +localStorage.getItem 'ores'
 time = m.prop "time"
 time +new Date
 mine = m.prop "mine"
@@ -24,7 +25,18 @@ mine
     ore: 100
     delta: 200
 # set initial value
-v.last= +new Date and v.cnt =0 for k,v of mine()
+getLastMineCount = (k,v)->
+  try mineStorage = JSON.parse localStorage.getItem 'mine' catch e
+    mineStorage = ''
+  cnt = (mineStorage and mineStorage[k] and mineStorage[k].cnt) or 0
+  last = (mineStorage and mineStorage[k] and mineStorage[k].last) or 0
+  v.cnt = cnt
+  v.last = last
+setLastMineCount = ->
+  r={}
+  r[k]=cnt:v.cnt,last:v.last for k,v of mine()
+  localStorage.setItem 'mine', JSON.stringify(r)
+getLastMineCount k,v for k,v of mine()
 
 ## forge model
 forge = [
@@ -62,7 +74,14 @@ forge = [
 ]
 
 forgeLevel = m.prop "forgeLevel"
-forgeLevel 0
+forgeLevel +localStorage.getItem 'forgeLevel'
+
+# reset all statuses
+resetAll = ->
+  localStorage.clear()
+  ores 0
+  forgeLevel 0
+  v.last= +new Date and v.cnt = 0 for k,v of mine()
 
 # easter egg
 eggBuf=""
@@ -78,6 +97,7 @@ document.addEventListener 'keypress', (e)->
 # components
 currentOresComponent = m.component
   view: ->
+    localStorage.setItem 'ores', +ores()
     m 'div#ores',
       m 'span.count', ores()
       m 'span', ' ores'
@@ -93,6 +113,10 @@ m.route document.body, '/',
             m 'a[href=/mine]', config:m.route, 'go to mine'
           m 'li',
             m 'a[href=/forge]', config:m.route, 'go to forge'
+          m 'li',
+            m 'span', onclick: ->
+              resetAll()
+            , "resetAll"
         currentOresComponent
   '/mine':
     controller: ->
@@ -118,6 +142,7 @@ m.route document.body, '/',
                     ores ores()-wrks.price
                     wrks.cnt += 1
                     wrks.last = +new Date
+                    setLastMineCount()
               )(v), "add"
         currentOresComponent
   '/forge':
@@ -139,8 +164,10 @@ m.route document.body, '/',
                   forgeLevel forgeLevel()+1
                 else
                   forgeLevel 0
+              localStorage.setItem 'forgeLevel', forgeLevel()
             , "forge!"
 
+# infinite loop /w requestAnimationFrame
 lp = ->
   time +new Date
   for k,v of mine()
