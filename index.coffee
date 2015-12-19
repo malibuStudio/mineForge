@@ -103,11 +103,14 @@ m.route document.body, '/',
         m 'div#touchMine', onclick: ->
           ores ores()+1
         ,'mine'
-        m 'ul#mine',
+        m 'ul',
           for k,v of mine()
             m "li##{k}",
-              m "span.name", k
-              m "span.cnt", v.cnt
+              m "div.name-count",
+                m "span.name", k
+                m "span.cnt", " #{v.cnt}ea"
+              m "div.price", "price #{v.price} ore"
+              m "div.delta", "speed #{v.delta} ore"
               # come closure!
               m "div.add", onclick: ((wrks)->
                 ->
@@ -116,23 +119,23 @@ m.route document.body, '/',
                     wrks.cnt += 1
                     wrks.last = +new Date
               )(v), "add"
-              m "span.price", "price #{v.price} ore"
         currentOresComponent
   '/forge':
     view: ->
+      f = forge[forgeLevel()]
       m 'div#forge',
         m 'a[href=/]', config:m.route, '< back'
         m 'div#equip'
-          m 'h', "#{forge[forgeLevel()].name}"
+          m 'h', "#{f.name}"
           currentOresComponent
           m 'div.info'
-            m 'div.next', "next :#{forge[forgeLevel()].next}"
-            m 'div.chance', "chance :#{forge[forgeLevel()].chance*100}%"
+            m 'div.next', "next :#{f.next}"
+            m 'div.chance', "chance :#{f.chance*100}%"
             m 'div.forge', onclick: ->
-              unless ores()<forge[forgeLevel()].next
+              unless ores()<f.next
                 chance = Math.random()
-                ores ores()-forge[forgeLevel()].next
-                if chance < forge[forgeLevel()].chance
+                ores ores()-f.next
+                if chance < f.chance
                   forgeLevel forgeLevel()+1
                 else
                   forgeLevel 0

@@ -3,10 +3,15 @@
   height: 50px;
   background-color: #ff0;
 }
-#mine #workers li span {
+#mine ul>li span {
   padding-right: 10px;
 }
-#mine #workers li .add {
+#mine ul>li .add {
+  width: 100px;
+  background-color: #cd5c5c;
+  color: #f5f5f5;
+}
+#forge .forge {
   width: 100px;
   background-color: #cd5c5c;
   color: #f5f5f5;
