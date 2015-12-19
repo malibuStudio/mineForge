@@ -134,7 +134,7 @@ m.route document.body, '/',
                 m "span.name", k
                 m "span.cnt", " #{v.cnt}ea"
               m "div.price", "price #{v.price} ore"
-              m "div.delta", "speed #{v.delta} ore"
+              m "div.delta", "speed #{v.delta} msec"
               # come closure!
               m "div.add", onclick: ((wrks)->
                 ->
